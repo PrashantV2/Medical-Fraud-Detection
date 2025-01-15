@@ -45,12 +45,6 @@ To develop a machine learning model to identify fraudulent Medicare claims based
 - Duplicate claims for the same beneficiary with overlapping dates.
 - Excessive claims by providers (e.g., more than 100 claims).
 
-### Machine Learning Models
-- Models trained include:
-  - **Random Forest**
-  - **Logistic Regression**
-  - **Gradient Boosting**
-- These models classify providers as fraudulent or non-fraudulent.
 
 ---
 
