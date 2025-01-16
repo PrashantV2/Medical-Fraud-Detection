@@ -1,0 +1,963 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "eecdf"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://eestr.dfs.core.windows.net/"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Test_Outpatientdata-1542969243754.csv",
+						"folderPath": "dump",
+						"fileSystem": "projectinfraud"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "BeneID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimStartDt",
+						"type": "String"
+					},
+					{
+						"name": "ClaimEndDt",
+						"type": "String"
+					},
+					{
+						"name": "Provider",
+						"type": "String"
+					},
+					{
+						"name": "InscClaimAmtReimbursed",
+						"type": "String"
+					},
+					{
+						"name": "AttendingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OperatingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OtherPhysician",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_6",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_7",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_8",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_9",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_10",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_6",
+						"type": "String"
+					},
+					{
+						"name": "DeductibleAmtPaid",
+						"type": "String"
+					},
+					{
+						"name": "ClmAdmitDiagnosisCode",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "raw",
+						"fileSystem": "projectinfraud"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "raw",
+						"fileSystem": "projectinfraud"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "BeneID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimStartDt",
+						"type": "String"
+					},
+					{
+						"name": "ClaimEndDt",
+						"type": "String"
+					},
+					{
+						"name": "Provider",
+						"type": "String"
+					},
+					{
+						"name": "InscClaimAmtReimbursed",
+						"type": "String"
+					},
+					{
+						"name": "AttendingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OperatingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OtherPhysician",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_6",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_7",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_8",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_9",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_10",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_6",
+						"type": "String"
+					},
+					{
+						"name": "DeductibleAmtPaid",
+						"type": "String"
+					},
+					{
+						"name": "ClmAdmitDiagnosisCode",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "raw",
+						"fileSystem": "projectinfraud"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "BeneID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimStartDt",
+						"type": "String"
+					},
+					{
+						"name": "ClaimEndDt",
+						"type": "String"
+					},
+					{
+						"name": "Provider",
+						"type": "String"
+					},
+					{
+						"name": "InscClaimAmtReimbursed",
+						"type": "String"
+					},
+					{
+						"name": "AttendingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OperatingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OtherPhysician",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_6",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_7",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_8",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_9",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_10",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_6",
+						"type": "String"
+					},
+					{
+						"name": "DeductibleAmtPaid",
+						"type": "String"
+					},
+					{
+						"name": "ClmAdmitDiagnosisCode",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedTextBen')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Test_Beneficiarydata-1542969243754.csv",
+						"folderPath": "dump",
+						"fileSystem": "projectinfraud"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "BeneID",
+						"type": "String"
+					},
+					{
+						"name": "DOB",
+						"type": "String"
+					},
+					{
+						"name": "DOD",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Race",
+						"type": "String"
+					},
+					{
+						"name": "RenalDiseaseIndicator",
+						"type": "String"
+					},
+					{
+						"name": "State",
+						"type": "String"
+					},
+					{
+						"name": "County",
+						"type": "String"
+					},
+					{
+						"name": "NoOfMonths_PartACov",
+						"type": "String"
+					},
+					{
+						"name": "NoOfMonths_PartBCov",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_Alzheimer",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_Heartfailure",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_KidneyDisease",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_Cancer",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_ObstrPulmonary",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_Depression",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_Diabetes",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_IschemicHeart",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_Osteoporasis",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_rheumatoidarthritis",
+						"type": "String"
+					},
+					{
+						"name": "ChronicCond_stroke",
+						"type": "String"
+					},
+					{
+						"name": "IPAnnualReimbursementAmt",
+						"type": "String"
+					},
+					{
+						"name": "IPAnnualDeductibleAmt",
+						"type": "String"
+					},
+					{
+						"name": "OPAnnualReimbursementAmt",
+						"type": "String"
+					},
+					{
+						"name": "OPAnnualDeductibleAmt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedTextInpatient')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Test_Inpatientdata-1542969243754.csv",
+						"folderPath": "dump",
+						"fileSystem": "projectinfraud"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "BeneID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimID",
+						"type": "String"
+					},
+					{
+						"name": "ClaimStartDt",
+						"type": "String"
+					},
+					{
+						"name": "ClaimEndDt",
+						"type": "String"
+					},
+					{
+						"name": "Provider",
+						"type": "String"
+					},
+					{
+						"name": "InscClaimAmtReimbursed",
+						"type": "String"
+					},
+					{
+						"name": "AttendingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OperatingPhysician",
+						"type": "String"
+					},
+					{
+						"name": "OtherPhysician",
+						"type": "String"
+					},
+					{
+						"name": "AdmissionDt",
+						"type": "String"
+					},
+					{
+						"name": "ClmAdmitDiagnosisCode",
+						"type": "String"
+					},
+					{
+						"name": "DeductibleAmtPaid",
+						"type": "String"
+					},
+					{
+						"name": "DischargeDt",
+						"type": "String"
+					},
+					{
+						"name": "DiagnosisGroupCode",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_6",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_7",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_8",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_9",
+						"type": "String"
+					},
+					{
+						"name": "ClmDiagnosisCode_10",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_1",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_2",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_3",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_4",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_5",
+						"type": "String"
+					},
+					{
+						"name": "ClmProcedureCode_6",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Outpatient Data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Inpatient Data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedTextInpatient",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText3",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedTextBen",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText4",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-01-16T03:26:15Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedTextInpatient')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText3')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedTextBen')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText4')]"
+			]
+		}
+	]
+}
